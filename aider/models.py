@@ -1116,15 +1116,17 @@ class Model(ModelSettings):
 
     def tokenizer(self, text):
         provider = self.info.get("litellm_provider", "openai")
-        rate_limiter.wait_if_needed(provider)
+        token_count = len(text.split())  # Rough estimate for rate limiting
+        rate_limiter.wait_if_needed(provider, token_count)
         return litellm.encode(model=self.name, text=text)
 
     def token_count(self, messages):
         if type(messages) is list:
             try:
                 provider = self.info.get("litellm_provider", "openai")
-                rate_limiter.wait_if_needed(provider)
-                return litellm.token_counter(model=self.name, messages=messages)
+                count = litellm.token_counter(model=self.name, messages=messages)
+                rate_limiter.wait_if_needed(provider, count)
+                return count
             except Exception as err:
                 print(f"Unable to count tokens: {err}")
                 return 0
