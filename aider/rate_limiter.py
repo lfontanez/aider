@@ -34,10 +34,20 @@ class RateLimiter:
                 input_tokens_per_minute=40000,       # 40k input tokens per minute
                 output_tokens_per_minute=8000        # 8k output tokens per minute
             ),
-            # Example additional provider
+            # Azure OpenAI rate limits
+            # https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits
             "azure": RateLimit(
-                requests_per_minute=240,  # Example: 4 RPS = 240 RPM
-                requests_per_hour=14400   # Example: 14.4k per hour
+                requests_per_minute=240,     # 4 RPS = 240 RPM (Standard tier)
+                requests_per_hour=14400,     # 14.4k per hour
+                input_tokens_per_minute=60000,   # 1k tokens per second = 60k per minute
+                output_tokens_per_minute=24000   # 400 tokens per second = 24k per minute
+            ),
+            # Cohere rate limits
+            # https://docs.cohere.com/reference/rate-limits
+            "cohere": RateLimit(
+                requests_per_minute=100,      # 100 RPM (Growth tier)
+                requests_per_hour=6000,       # 6k per hour
+                input_tokens_per_minute=30000 # 500 tokens per second = 30k per minute
             ),
             # Add other provider limits as needed
         }
