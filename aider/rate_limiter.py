@@ -15,14 +15,23 @@ class RateLimiter:
         self.locks: Dict[str, Lock] = defaultdict(Lock)
         self.request_times: Dict[str, list] = defaultdict(list)
         self.rate_limits: Dict[str, RateLimit] = {
+            # OpenAI rate limits
+            # https://platform.openai.com/docs/guides/rate-limits
             "openai": RateLimit(
-                requests_per_minute=500,
-                requests_per_hour=10000,
-                requests_per_day=150000
+                requests_per_minute=500,  # 500 RPM for most models
+                requests_per_hour=10000,  # 10k per hour
+                requests_per_day=150000   # 150k per day
             ),
+            # Anthropic rate limits
+            # https://docs.anthropic.com/claude/reference/rate-limits
             "anthropic": RateLimit(
-                requests_per_minute=50,
-                requests_per_hour=1000
+                requests_per_minute=50,   # 50 RPM by default
+                requests_per_hour=1000    # 1k per hour
+            ),
+            # Example additional provider
+            "azure": RateLimit(
+                requests_per_minute=240,  # Example: 4 RPS = 240 RPM
+                requests_per_hour=14400   # Example: 14.4k per hour
             ),
             # Add other provider limits as needed
         }
