@@ -14,6 +14,7 @@ import yaml
 from PIL import Image
 
 from aider.dump import dump  # noqa: F401
+from aider.rate_limiter import rate_limiter
 from aider.llm import litellm
 
 DEFAULT_MODEL_NAME = "gpt-4o"
@@ -1114,11 +1115,15 @@ class Model(ModelSettings):
         return self.editor_model
 
     def tokenizer(self, text):
+        provider = self.info.get("litellm_provider", "openai")
+        rate_limiter.wait_if_needed(provider)
         return litellm.encode(model=self.name, text=text)
 
     def token_count(self, messages):
         if type(messages) is list:
             try:
+                provider = self.info.get("litellm_provider", "openai")
+                rate_limiter.wait_if_needed(provider)
                 return litellm.token_counter(model=self.name, messages=messages)
             except Exception as err:
                 print(f"Unable to count tokens: {err}")
