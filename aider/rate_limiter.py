@@ -21,33 +21,33 @@ class RateLimiter:
             # OpenAI rate limits
             # https://platform.openai.com/docs/guides/rate-limits
             "openai": RateLimit(
-                requests_per_minute=500,  # 500 RPM for most models
-                requests_per_hour=10000,  # 10k per hour
-                requests_per_day=150000   # 150k per day
+                requests_per_minute=int(os.getenv("OPENAI_REQUESTS_PER_MINUTE", "500")),
+                requests_per_hour=int(os.getenv("OPENAI_REQUESTS_PER_HOUR", "10000")),
+                requests_per_day=int(os.getenv("OPENAI_REQUESTS_PER_DAY", "150000"))
             ),
             # Anthropic rate limits 
             # https://docs.anthropic.com/en/api/rate-limits
             "anthropic": RateLimit(
-                requests_per_minute=50,              # 50 RPM
-                requests_per_hour=None,              # No hourly limit specified
-                requests_per_day=None,               # No daily limit specified
-                input_tokens_per_minute=40000,       # 40k input tokens per minute
-                output_tokens_per_minute=8000        # 8k output tokens per minute
+                requests_per_minute=int(os.getenv("ANTHROPIC_REQUESTS_PER_MINUTE", "50")),
+                requests_per_hour=None,
+                requests_per_day=None,
+                input_tokens_per_minute=int(os.getenv("ANTHROPIC_INPUT_TOKENS_PER_MINUTE", "40000")),
+                output_tokens_per_minute=int(os.getenv("ANTHROPIC_OUTPUT_TOKENS_PER_MINUTE", "8000"))
             ),
             # Azure OpenAI rate limits
             # https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits
             "azure": RateLimit(
-                requests_per_minute=240,     # 4 RPS = 240 RPM (Standard tier)
-                requests_per_hour=14400,     # 14.4k per hour
-                input_tokens_per_minute=60000,   # 1k tokens per second = 60k per minute
-                output_tokens_per_minute=24000   # 400 tokens per second = 24k per minute
+                requests_per_minute=int(os.getenv("AZURE_REQUESTS_PER_MINUTE", "240")),
+                requests_per_hour=int(os.getenv("AZURE_REQUESTS_PER_HOUR", "14400")),
+                input_tokens_per_minute=int(os.getenv("AZURE_INPUT_TOKENS_PER_MINUTE", "60000")),
+                output_tokens_per_minute=int(os.getenv("AZURE_OUTPUT_TOKENS_PER_MINUTE", "24000"))
             ),
             # Cohere rate limits
             # https://docs.cohere.com/reference/rate-limits
             "cohere": RateLimit(
-                requests_per_minute=100,      # 100 RPM (Growth tier)
-                requests_per_hour=6000,       # 6k per hour
-                input_tokens_per_minute=30000 # 500 tokens per second = 30k per minute
+                requests_per_minute=int(os.getenv("COHERE_REQUESTS_PER_MINUTE", "100")),
+                requests_per_hour=int(os.getenv("COHERE_REQUESTS_PER_HOUR", "6000")),
+                input_tokens_per_minute=int(os.getenv("COHERE_INPUT_TOKENS_PER_MINUTE", "30000"))
             ),
             # Add other provider limits as needed
         }
