@@ -163,7 +163,12 @@ def check_gitignore(git_root, io, ask=True):
     except ANY_GIT_ERROR:
         pass
 
-    patterns = [".aider*", ".env"]
+    patterns = [
+        ".aider*",         # aider config and history files
+        ".env",            # environment variables and API keys
+        ".aider.cache/",   # cache directory for model metadata
+        "*.cache",         # other cache files
+    ]
     patterns_to_add = []
 
     gitignore_file = Path(git_root) / ".gitignore"
