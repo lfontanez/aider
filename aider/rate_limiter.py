@@ -4,11 +4,13 @@ from dataclasses import dataclass
 from threading import Lock
 from typing import Dict, Optional
 
-@dataclass
+@dataclass 
 class RateLimit:
     requests_per_minute: int
     requests_per_hour: Optional[int] = None
     requests_per_day: Optional[int] = None
+    input_tokens_per_minute: Optional[int] = None
+    output_tokens_per_minute: Optional[int] = None
 
 class RateLimiter:
     def __init__(self):
@@ -22,11 +24,14 @@ class RateLimiter:
                 requests_per_hour=10000,  # 10k per hour
                 requests_per_day=150000   # 150k per day
             ),
-            # Anthropic rate limits
-            # https://docs.anthropic.com/claude/reference/rate-limits
+            # Anthropic rate limits 
+            # https://docs.anthropic.com/en/api/rate-limits
             "anthropic": RateLimit(
-                requests_per_minute=50,   # 50 RPM by default
-                requests_per_hour=1000    # 1k per hour
+                requests_per_minute=50,              # 50 RPM
+                requests_per_hour=None,              # No hourly limit specified
+                requests_per_day=None,               # No daily limit specified
+                input_tokens_per_minute=40000,       # 40k input tokens per minute
+                output_tokens_per_minute=8000        # 8k output tokens per minute
             ),
             # Example additional provider
             "azure": RateLimit(
