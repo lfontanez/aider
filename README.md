@@ -1,12 +1,86 @@
 
-<!-- Edit README.md, not index.md -->
+# Aider v 0.72.3 Coding Assistant with Rate and Token Limits
 
-# Aider is AI pair programming in your terminal
+This is a modified version of [Aider](https://github.com/Aider-AI/aider), an AI pair programming tool that lets you edit code through natural language conversations.
 
-Aider lets you pair program with LLMs,
-to edit code in your local git repository.
-Start a new project or work with an existing code base.
-Aider works best with Claude 3.5 Sonnet, DeepSeek V3, o1 & GPT-4o and can [connect to almost any LLM](https://aider.chat/docs/llms.html).
+## Rate and Token Limiting Features
+
+This version adds comprehensive rate limiting functionality to prevent hitting API provider limits:
+
+- Per-provider rate limits for OpenAI, Anthropic, Azure, and Cohere
+- Multiple time window limits (per minute, hour, day) 
+- Both request count and token count tracking
+- Environment variable configuration
+- Thread-safe operation using locks
+
+### Default Provider Limits
+
+**OpenAI:**
+- 500 requests per minute
+- 10,000 requests per hour
+- 150,000 requests per day
+
+**Anthropic:**
+- 50 requests per minute 
+- 40,000 input tokens per minute
+- 8,000 output tokens per minute
+
+**Azure OpenAI:**
+- 240 requests per minute
+- 14,400 requests per hour
+- 60,000 input tokens per minute
+- 24,000 output tokens per minute
+
+**Cohere:**
+- 100 requests per minute
+- 6,000 requests per hour
+- 30,000 input tokens per minute
+
+## Installation
+
+1. Remove any existing Aider installation:
+```bash
+pip uninstall aider-chat
+```
+
+2. Clone this repository:
+```bash
+git clone https://github.com/your-repo/aider.git
+cd aider
+```
+
+3. Create a Python 3.12 virtual environment:
+```bash
+python3.12 -m venv venv
+```
+
+4. Activate the virtual environment:
+```bash
+source venv/bin/activate  # Linux/Mac
+.\venv\Scripts\activate   # Windows
+```
+
+5. Install in editable mode:
+```bash
+pip install -e .
+```
+
+6. Configure your environment:
+```bash
+cp .env-example .env
+# Edit .env with your API keys and custom rate limits
+```
+
+7. Verify installation:
+```bash
+aider --version  # Should show "aider 0.72.3.dev.r1+parse"
+```
+
+## Credits
+
+- Original [Aider project](https://github.com/Aider-AI/aider)
+- Rate limiting implementation: 80% coded by Aider + Claude 3.5 Sonnet
+- Integration and testing: Leamsi Fontánez from [R1 Software](https://r1software.com)
 
 
 <!-- SCREENCAST START -->
