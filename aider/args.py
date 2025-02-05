@@ -17,7 +17,7 @@ from .dump import dump  # noqa: F401
 
 
 def default_env_file(git_root):
-    return os.path.join(git_root, ".env") if git_root else ".env"
+    return os.path.join(git_root, ".env-aider") if git_root else ".env-aider"
 
 
 def get_parser(default_config_files, git_root):
@@ -788,7 +788,7 @@ def get_parser(default_config_files, git_root):
         "--env-file",
         metavar="ENV_FILE",
         default=default_env_file(git_root),
-        help="Specify the .env file to load (default: .env in git root)",
+        help="Specify the .env file to load (default: .env-aider in git root)",
     )
     group.add_argument(
         "--suggest-shell-commands",
