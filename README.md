@@ -67,8 +67,8 @@ pip install -e .
 
 6. Configure your environment:
 ```bash
-cp .env-example .env
-# Edit .env with your API keys and custom rate limits
+cp .env-example .env-aider
+# Edit .env-aider with your API keys and custom rate limits
 ```
 
 7. Verify installation:

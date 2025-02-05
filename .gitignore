@@ -18,4 +18,5 @@ aider/_version.py
 tmp.benchmarks/
 *_env/
 .env
+.env-aider
 python=*/
